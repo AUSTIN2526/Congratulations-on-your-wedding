@@ -3,7 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>我們的婚禮</title>
+  <title>我們的婚禮｜11/1 午宴｜萊特薇庭 高雄館 心閱閣 9F</title>
+  <meta name="description" content="2025/11/1（六）中午12:00入席、12:30準時開席｜萊特薇庭 高雄館・心閱閣 9樓（高雄市前鎮區林森四路189號）｜停車：承億酒店專屬停車場" />
+  <meta property="og:title" content="我們的婚禮｜11/1 午宴" />
+  <meta property="og:description" content="萊特薇庭 高雄館 心閱閣 9F｜高雄市前鎮區林森四路189號｜12:00入席・12:30開席" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="S__135061520.png" />
+  <meta name="theme-color" content="#f6d3da" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root{
@@ -23,112 +31,90 @@
         linear-gradient(180deg, #fff 0%, var(--bg1) 100%);
     }
 
-    .wrap{
-      display:flex; flex-direction:column;
-      max-width:1200px; margin:0 auto; gap:24px; padding:20px;
-    }
-    @media(min-width:900px){
-      .wrap{
-        display:grid;
-        grid-template-columns: 1fr 1fr;
-        gap:24px;
-        align-items:stretch;
-      }
-    }
+    .wrap{ display:flex; flex-direction:column; max-width:1200px; margin:0 auto; gap:24px; padding:20px;}
+    @media(min-width:900px){ .wrap{ display:grid; grid-template-columns: 1fr 1fr; gap:24px; align-items:stretch; } }
 
-    /* 左側：可自動+手動滾動 */
-    .viewer{
-      overflow-y:auto; /* 允許手動捲動 */
-      border-radius:26px;
-      background:rgba(255,255,255,.55);
-      border:1px solid rgba(255,255,255,.7);
-      backdrop-filter:saturate(140%) blur(10px);
-      box-shadow:0 20px 35px rgba(180,120,130,.16);
-      height:75vh;
-    }
-    @media(min-width:900px){
-      .viewer{ height:var(--colH);}
-    }
-    .hero{
-      display:block;
-      width:100%; height:auto;
-      user-select:none; -webkit-user-drag:none;
-    }
+    .viewer{ overflow-y:auto; border-radius:26px; background:rgba(255,255,255,.55); border:1px solid rgba(255,255,255,.7); backdrop-filter:saturate(140%) blur(10px); box-shadow:0 20px 35px rgba(180,120,130,.16); height:75vh; }
+    @media(min-width:900px){ .viewer{ height:var(--colH);} }
+    .hero{ display:block; width:100%; height:auto; user-select:none; -webkit-user-drag:none; }
 
-    /* 右側 */
-    .panel{
-      background:rgba(255,255,255,.7);
-      border:1px solid rgba(255,255,255,.85);
-      border-radius:22px;
-      box-shadow:0 16px 28px rgba(130,120,180,.14);
-      display:flex; flex-direction:column;
-    }
-    @media(min-width:900px){
-      .panel{ height:var(--colH);}
-    }
-    .panel-inner{
-      padding:24px 18px;
-      overflow:auto;
-    }
-    .panel h3{
-      margin:0 0 10px; font-family:"Noto Serif TC", serif;
-      font-weight:700; color:#734e57; letter-spacing:.06em;
-      text-align:center;
-    }
+    .panel{ background:rgba(255,255,255,.7); border:1px solid rgba(255,255,255,.85); border-radius:22px; box-shadow:0 16px 28px rgba(130,120,180,.14); display:flex; flex-direction:column; }
+    @media(min-width:900px){ .panel{ height:var(--colH);} }
+    .panel-inner{ padding:24px 18px; overflow:auto; }
+    .panel h3{ margin:0 0 10px; font-family:"Noto Serif TC", serif; font-weight:700; color:#734e57; letter-spacing:.06em; text-align:center; }
     .muted{opacity:.78; font-size:.95rem; text-align:center}
-    .timetaco-list{margin-top:14px}
 
-    .address{ margin-top:24px; }
-    .address h4{margin:0 0 6px; font-size:1.1rem; color:#6a4b57}
-    .address p{margin:0 0 10px; font-size:.95rem}
-    .map{
-      border:0; border-radius:16px;
-      width:100%; height:240px;
-      box-shadow:0 6px 14px rgba(0,0,0,.12);
-    }
+    .section{ margin-top:18px; }
+    .section h4{ margin:0 0 8px; font-size:1.06rem; color:#6a4b57; }
+    .section p{ margin:0 0 8px; font-size:.96rem; }
+
+    .info-list{ display:grid; grid-template-columns: 1fr; gap:12px; }
+    .item{ padding:10px 12px; border-radius:14px; background:rgba(255,255,255,.65); border:1px solid rgba(0,0,0,.06); box-shadow:0 4px 12px rgba(0,0,0,.05); }
+    .label{ font-weight:700; }
+
+    .map{ border:0; border-radius:16px; width:100%; height:260px; box-shadow:0 6px 14px rgba(0,0,0,.12); }
+
+    .nav-btns{ display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; }
+    .btn{ border:none; cursor:pointer; padding:10px 14px; border-radius:999px; background:linear-gradient(180deg, var(--glow), rgba(255,255,255,.4)); box-shadow:0 10px 18px rgba(0,0,0,.08), inset 0 0 0 1px rgba(255,255,255,.7); font-weight:600; color:#6a5360; backdrop-filter:saturate(140%) blur(6px); text-decoration:none; display:inline-block; }
+    .chip{font-size:.85rem; padding:8px 12px; background:rgba(255,255,255,.6); border-radius:999px; border:1px solid rgba(255,255,255,.8)}
+    .copy{ font-size:.86rem; margin-left:6px; }
 
     footer{ text-align:center; font-size:.86rem; opacity:.7; padding:12px 0 24px; }
 
-    .music{
-      position:fixed; right:16px; bottom:16px; z-index:10; display:flex; gap:10px; align-items:center;
-    }
-    .btn{
-      border:none; cursor:pointer; padding:10px 14px; border-radius:999px;
-      background:linear-gradient(180deg, var(--glow), rgba(255,255,255,.4));
-      box-shadow:0 10px 18px rgba(0,0,0,.08), inset 0 0 0 1px rgba(255,255,255,.7);
-      font-weight:600; color:#6a5360; backdrop-filter:saturate(140%) blur(6px);
-    }
-    .chip{font-size:.85rem; padding:8px 12px; background:rgba(255,255,255,.6); border-radius:999px; border:1px solid rgba(255,255,255,.8)}
+    .music{ position:fixed; right:16px; bottom:16px; z-index:10; display:flex; gap:10px; align-items:center; }
     .hide{display:none}
   </style>
 </head>
 <body>
   <main class="wrap">
     <!-- 左：可自動+手動滾動 -->
-    <section class="viewer" id="viewer">
-      <img id="hero" class="hero" src="S__135061520.png" alt="Wedding Invitation">
+    <section class="viewer" id="viewer" aria-label="婚禮邀請視覺">
+      <img id="hero" class="hero" src="S__135061520.png" alt="Wedding Invitation 主視覺">
     </section>
 
     <!-- 右：倒數與地點 -->
-    <section class="panel">
+    <section class="panel" aria-label="資訊與地圖">
       <div class="panel-inner">
         <h3>我們的婚禮倒數</h3>
         <div class="muted">期待與您共享喜悅</div>
-        <div class="timetaco-list" data-timetacoid="pkngab"></div>
+        <div class="section">
+          <div class="timetaco-list" data-timetacoid="pkngab" aria-label="倒數計時"></div>
+        </div>
 
-        <div class="address">
-          <h4>婚禮地點</h4>
-          <p>萊特薇庭 高雄館 Light Wedding Kaohsiung</p>
-          <iframe class="map"
-            src="https://www.google.com/maps?q=%E8%90%8A%E7%89%B9%E8%96%87%E5%BA%AD%20%E9%AB%98%E9%9B%84%E9%A4%A8%20Light%20Wedding%20Kaohsiung&output=embed"
-            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-          <p style="margin-top:10px">
-            <a href="https://www.google.com/maps?q=%E8%90%8A%E7%89%B9%E8%96%87%E5%BA%AD%20%E9%AB%98%E9%9B%84%E9%A4%A8%20Light%20Wedding%20Kaohsiung"
-               target="_blank" rel="noopener"
-               style="display:inline-block;padding:10px 14px;border-radius:999px;background:#f6d3da;color:#6a4b57;text-decoration:none;font-weight:600;">
-              打開 Google Maps
-            </a>
+        <div class="section">
+          <h4>日期 Date</h4>
+          <div class="info-list">
+            <div class="item"><span class="label">2025/11/1（六）</span> Saturday Lunch 午宴</div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h4>時間 Time</h4>
+          <div class="info-list">
+            <div class="item">中午 <b>12:00</b> 入席，<b>12:30</b> 婚宴準時開席</div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h4>地點 Location</h4>
+          <p>萊特薇庭 高雄館・<b>心閱閣 9樓</b></p>
+          <p>
+            <span id="addr">高雄市前鎮區林森四路189號</span>
+            <button class="btn copy" id="copyBtn" aria-label="複製地址">複製地址</button>
           </p>
+          <iframe class="map"
+            title="Google 地圖 - 萊特薇庭 高雄館"
+            src="https://www.google.com/maps?q=%E8%90%8A%E7%89%B9%E8%96%87%E5%BA%AD%20%E9%AB%98%E9%9B%84%E9%A4%A8%20Light%20Wedding%20Kaohsiung%20%E6%9E%97%E6%A3%AE%E5%9B%9B%E8%B7%AF189%E8%99%9F&output=embed"
+            allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <div class="nav-btns" role="group" aria-label="導航按鈕">
+            <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps?q=%E8%90%8A%E7%89%B9%E8%96%87%E5%BA%AD%20%E9%AB%98%E9%9B%84%E9%A4%A8%20Light%20Wedding%20Kaohsiung%20%E6%9E%97%E6%A3%AE%E5%9B%9B%E8%B7%AF189%E8%99%9F">打開 Google Maps</a>
+            <a class="btn" target="_blank" rel="noopener" href="https://maps.apple.com/?q=%E8%90%8A%E7%89%B9%E8%96%87%E5%BA%AD%20%E9%AB%98%E9%9B%84%E9%A4%A8&address=%E9%AB%98%E9%9B%84%E5%B8%82%E5%89%8D%E9%8E%AE%E5%8D%80%E6%9E%97%E6%A3%AE%E5%9B%9B%E8%B7%AF189%E8%99%9F">打開 Apple 地圖</a>
+          </div>
+        </div>
+
+        <div class="section">
+          <h4>停車 Parking</h4>
+          <div class="item">承億酒店專屬停車場（建議提早到場，以免車位滿位）</div>
         </div>
       </div>
     </section>
@@ -138,8 +124,9 @@
 
   <!-- 背景音樂 -->
   <audio id="bgm" src="music.mp3" preload="auto" loop></audio>
-  <div class="music">
+  <div class="music" aria-live="polite">
     <button id="toggle" class="btn">▶︎ 播放音樂</button>
+    <span id="hint" class="chip hide">若未自動播放，請點一下畫面</span>
   </div>
 
   <!-- TimeTaco -->
@@ -158,26 +145,18 @@
       const viewer=document.getElementById('viewer');
       const img=document.getElementById('hero');
       let cycles=0, speed=20, rafId, last=0, auto=true;
-
       function step(ts){
-        if(!last) last=ts;
-        const dt=(ts-last)/1000; last=ts;
+        if(!last) last=ts; const dt=(ts-last)/1000; last=ts;
         viewer.scrollTop+=speed*dt;
         if(viewer.scrollTop >= img.scrollHeight - viewer.clientHeight){
-          cycles++;
-          if(cycles>=2){ cancelAnimationFrame(rafId); auto=false; return; }
-          viewer.scrollTop=0;
-          setTimeout(()=>{ last=0; rafId=requestAnimationFrame(step); },500);
-          return;
+          cycles++; if(cycles>=2){ cancelAnimationFrame(rafId); auto=false; return; }
+          viewer.scrollTop=0; setTimeout(()=>{ last=0; rafId=requestAnimationFrame(step); },500); return;
         }
         if(auto) rafId=requestAnimationFrame(step);
       }
-
       img.addEventListener('load',()=>{ rafId=requestAnimationFrame(step); });
       if(img.complete) img.dispatchEvent(new Event('load'));
-      // 使用者滾動時就暫停自動
-      viewer.addEventListener('wheel',()=>{ auto=false; cancelAnimationFrame(rafId); });
-      viewer.addEventListener('touchmove',()=>{ auto=false; cancelAnimationFrame(rafId); });
+      ['wheel','touchmove'].forEach(ev=>viewer.addEventListener(ev,()=>{ auto=false; cancelAnimationFrame(rafId); }));
     })();
   </script>
 
@@ -187,12 +166,44 @@
     async function setPlaying(playing){
       try{ if(playing){await audio.play(); btn.textContent='⏸︎ 暫停音樂'; hint.classList.add('hide');}
         else{audio.pause(); btn.textContent='▶︎ 播放音樂';}}
-      catch(e){ hint.classList.remove('hide');}
+      catch(e){ hint.classList.remove('hide'); }
     }
     document.addEventListener('DOMContentLoaded',()=>setPlaying(true));
     window.addEventListener('click',()=>audio.paused&&setPlaying(true));
     window.addEventListener('touchstart',()=>audio.paused&&setPlaying(true));
     btn.addEventListener('click',()=>audio.paused?setPlaying(true):setPlaying(false));
+
+    // 複製地址
+    document.getElementById('copyBtn').addEventListener('click', async()=>{
+      const addr = document.getElementById('addr').textContent.trim();
+      try{ await navigator.clipboard.writeText(addr); btn.textContent='已複製 ✓'; setTimeout(()=>btn.textContent= audio.paused? '▶︎ 播放音樂':'⏸︎ 暫停音樂', 1200);}catch(e){}
+    });
+  </script>
+
+  <!-- 結構化資料（可提升分享與搜尋顯示） -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    "name": "我們的婚禮 午宴",
+    "startDate": "2025-11-01T12:30:00+08:00",
+    "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+    "eventStatus": "https://schema.org/EventScheduled",
+    "location": {
+      "@type": "Place",
+      "name": "萊特薇庭 高雄館 心閱閣 9樓",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "林森四路189號",
+        "addressLocality": "前鎮區",
+        "addressRegion": "高雄市",
+        "addressCountry": "TW"
+      }
+    },
+    "image": ["S__135061520.png"],
+    "description": "2025/11/1（六）中午12:00入席、12:30準時開席。停車：承億酒店專屬停車場",
+    "organizer": {"@type":"Organization","name":"Our Wedding"}
+  }
   </script>
 </body>
 </html>
