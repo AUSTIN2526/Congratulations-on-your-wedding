@@ -139,44 +139,95 @@
     }(document,'script','timetaco-jssdk'));
   </script>
 
-  <!-- 自動捲動 viewer（可手動干預） -->
+  <!-- 自動捲動 viewer（改為連續位移；更順暢） -->
   <script>
-    (function(){
-      const viewer=document.getElementById('viewer');
-      const img=document.getElementById('hero');
-      let cycles=0, speed=20, rafId, last=0, auto=true;
-      function step(ts){
-        if(!last) last=ts; const dt=(ts-last)/1000; last=ts;
-        viewer.scrollTop+=speed*dt;
-        if(viewer.scrollTop >= img.scrollHeight - viewer.clientHeight){
-          cycles++; if(cycles>=2){ cancelAnimationFrame(rafId); auto=false; return; }
-          viewer.scrollTop=0; setTimeout(()=>{ last=0; rafId=requestAnimationFrame(step); },500); return;
-        }
-        if(auto) rafId=requestAnimationFrame(step);
+  (() => {
+    const viewer = document.getElementById('viewer');
+    const img = document.getElementById('hero');
+
+    let speed = 28;           // px / 秒（可調整）
+    let auto = true;
+    let start = null;
+    let rafId = 0;
+    let maxScroll = 0;
+
+    function recalc(){
+      const imgH = img.naturalHeight || img.scrollHeight;
+      maxScroll = Math.max(0, imgH - viewer.clientHeight);
+    }
+
+    function loop(ts){
+      if (!auto) return;
+      if (start == null) start = ts;
+      const elapsed = (ts - start) / 1000; // 秒
+      if (maxScroll > 0){
+        const y = (elapsed * speed) % (maxScroll + 1);
+        viewer.scrollTop = y;
       }
-      img.addEventListener('load',()=>{ rafId=requestAnimationFrame(step); });
-      if(img.complete) img.dispatchEvent(new Event('load'));
-      ['wheel','touchmove'].forEach(ev=>viewer.addEventListener(ev,()=>{ auto=false; cancelAnimationFrame(rafId); }));
-    })();
+      rafId = requestAnimationFrame(loop);
+    }
+
+    function startAuto(){
+      cancelAnimationFrame(rafId);
+      start = null;
+      auto = true;
+      rafId = requestAnimationFrame(loop);
+    }
+    function stopAuto(){
+      auto = false;
+      cancelAnimationFrame(rafId);
+    }
+
+    img.addEventListener('load', () => { recalc(); startAuto(); }, { passive: true });
+    if (img.complete) { recalc(); startAuto(); }
+
+    window.addEventListener('resize', () => { recalc(); start = null; }, { passive: true });
+
+    ['wheel','touchstart','pointerdown','keydown'].forEach(ev => {
+      viewer.addEventListener(ev, stopAuto, { passive: true });
+    });
+
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      stopAuto();
+    }
+  })();
   </script>
 
-  <!-- 音樂控制 -->
+  <!-- 音樂控制 + 複製地址（bug fix：不再誤改播放按鈕文字） -->
   <script>
-    const audio=document.getElementById('bgm'), btn=document.getElementById('toggle'), hint=document.getElementById('hint');
+    const audio = document.getElementById('bgm');
+    const playBtn = document.getElementById('toggle');
+    const hint = document.getElementById('hint');
+
     async function setPlaying(playing){
-      try{ if(playing){await audio.play(); btn.textContent='⏸︎ 暫停音樂'; hint.classList.add('hide');}
-        else{audio.pause(); btn.textContent='▶︎ 播放音樂';}}
-      catch(e){ hint.classList.remove('hide'); }
+      try{
+        if(playing){
+          await audio.play();
+          playBtn.textContent='⏸︎ 暫停音樂';
+          hint.classList.add('hide');
+        } else {
+          audio.pause();
+          playBtn.textContent='▶︎ 播放音樂';
+        }
+      }catch(e){
+        hint.classList.remove('hide');
+      }
     }
     document.addEventListener('DOMContentLoaded',()=>setPlaying(true));
     window.addEventListener('click',()=>audio.paused&&setPlaying(true));
     window.addEventListener('touchstart',()=>audio.paused&&setPlaying(true));
-    btn.addEventListener('click',()=>audio.paused?setPlaying(true):setPlaying(false));
+    playBtn.addEventListener('click',()=>audio.paused?setPlaying(true):setPlaying(false));
 
-    // 複製地址
-    document.getElementById('copyBtn').addEventListener('click', async()=>{
+    // 複製地址（僅改動複製鈕文字）
+    document.getElementById('copyBtn').addEventListener('click', async (e) => {
       const addr = document.getElementById('addr').textContent.trim();
-      try{ await navigator.clipboard.writeText(addr); btn.textContent='已複製 ✓'; setTimeout(()=>btn.textContent= audio.paused? '▶︎ 播放音樂':'⏸︎ 暫停音樂', 1200);}catch(e){}
+      const self = e.currentTarget;
+      try{
+        await navigator.clipboard.writeText(addr);
+        const old = self.textContent;
+        self.textContent = '已複製 ✓';
+        setTimeout(()=> self.textContent = old, 1200);
+      }catch(err){}
     });
   </script>
 
