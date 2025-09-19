@@ -9,18 +9,25 @@
   <meta property="og:description" content="萊特薇庭 高雄館 心閱閣 9F｜高雄市前鎮區林森四路189號｜12:00入席・12:30開席" />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="S__135061520.png" />
-  <meta name="theme-color" content="#f6d3da" />
+  <meta name="theme-color" content="#f6e8e2" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root{
-      --ink:#5b4b4b; --glow:rgba(255,255,255,.65);
+      --ink:#5b4b4b; 
+      --glow:rgba(255,255,255,.65);
       --bg1:#fff5f2; --bg2:#fde8ef; --bg3:#f7f2ff;
       --colH:90vh;
+      /* 新增：婚禮主色 */
+      --accent:#A98B73; /* 倒數主色 */
+      --accent-ink:#fffaf5; /* 倒數字色 */
+      --accent-soft:rgba(169,139,115,.12); /* 柔和邊框/底色 */
     }
     *{box-sizing:border-box}
-    html,body{height:100%}
+    html,body{height:100%;}
+    /* 最外層不要滾動 */
+    html,body{overflow:hidden;}
     body{
       margin:0; color:var(--ink); line-height:1.6;
       font-family: Inter, system-ui, -apple-system, "Noto Serif TC","PingFang TC","Microsoft JhengHei", Arial, sans-serif;
@@ -31,7 +38,7 @@
         linear-gradient(180deg, #fff 0%, var(--bg1) 100%);
     }
 
-    .wrap{ display:flex; flex-direction:column; max-width:1200px; margin:0 auto; gap:24px; padding:20px;}
+    .wrap{ display:flex; flex-direction:column; max-width:1200px; margin:0 auto; gap:24px; padding:20px; height:100%; }
     @media(min-width:900px){ .wrap{ display:grid; grid-template-columns: 1fr 1fr; gap:24px; align-items:stretch; } }
 
     .viewer{ overflow-y:auto; border-radius:26px; background:rgba(255,255,255,.55); border:1px solid rgba(255,255,255,.7); backdrop-filter:saturate(140%) blur(10px); box-shadow:0 20px 35px rgba(180,120,130,.16); height:75vh; }
@@ -56,6 +63,8 @@
 
     .nav-btns{ display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; }
     .btn{ border:none; cursor:pointer; padding:10px 14px; border-radius:999px; background:linear-gradient(180deg, var(--glow), rgba(255,255,255,.4)); box-shadow:0 10px 18px rgba(0,0,0,.08), inset 0 0 0 1px rgba(255,255,255,.7); font-weight:600; color:#6a5360; backdrop-filter:saturate(140%) blur(6px); text-decoration:none; display:inline-block; }
+    /* 微調按鈕更貼近背景與主色 */
+    .btn{ box-shadow:0 10px 18px rgba(169,139,115,.18), inset 0 0 0 1px rgba(255,255,255,.75); color:#6a4b3e; }
     .chip{font-size:.85rem; padding:8px 12px; background:rgba(255,255,255,.6); border-radius:999px; border:1px solid rgba(255,255,255,.8)}
     .copy{ font-size:.86rem; margin-left:6px; }
 
@@ -64,15 +73,17 @@
     .music{ position:fixed; right:16px; bottom:16px; z-index:10; display:flex; gap:10px; align-items:center; }
     .hide{display:none}
 
-    /* ==== Countdown（自家倒數｜手機不換行） ==== */
+    /* ==== 倒數：以 #A98B73 為主色，貼近柔和背景 ==== */
     .countdown{
       margin-top:10px; border-radius:20px;
-      background:#2e2540; color:#fff;
-      box-shadow:0 16px 28px rgba(30,20,60,.3);
+      background:var(--accent); color:var(--accent-ink);
+      box-shadow:0 16px 28px rgba(169,139,115,.35);
       padding:18px 14px;
-      background-image: radial-gradient(2px 2px at 10px 10px, rgba(255,255,255,.06) 1px, transparent 1px);
+      background-image:
+        radial-gradient(2px 2px at 10px 10px, rgba(255,255,255,.08) 1px, transparent 1px);
       background-size: 24px 24px;
       overflow-x:auto; /* 超窄螢幕可左右滑，避免換行 */
+      border:1px solid rgba(255,255,255,.28);
     }
     .cd-grid{
       display:grid;
@@ -82,8 +93,9 @@
     }
     .cd-box{
       display:flex; flex-direction:column; align-items:center; justify-content:center;
-      background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.18);
       border-radius:16px; padding:12px 6px; text-align:center;
+      box-shadow:0 4px 10px rgba(0,0,0,.12), inset 0 0 0 1px rgba(255,255,255,.06);
     }
     .cd-num{
       font-weight:800;
@@ -91,20 +103,21 @@
       line-height:1;
       letter-spacing:.02em;
       white-space:nowrap; /* 關鍵：數字不換行 */
+      color:var(--accent-ink);
+      text-shadow:0 1px 0 rgba(0,0,0,.15);
     }
     .cd-lab{
-      opacity:.8; font-weight:700; letter-spacing:.12em;
+      opacity:.95; font-weight:700; letter-spacing:.12em;
       font-size: clamp(10px, 2.8vw, 14px);
-      margin-top:6px;
+      margin-top:6px; color:#fff7ef;
     }
     .cd-title{
-      display:flex; align-items:center; gap:10px; color:#fff;
-      opacity:.92; font-weight:800; letter-spacing:.08em; margin:2px 0 12px;
-      text-shadow:0 2px 0 rgba(0,0,0,.25);
+      display:flex; align-items:center; gap:10px; color:#fff7ef;
+      opacity:.95; font-weight:800; letter-spacing:.08em; margin:2px 0 12px;
+      text-shadow:0 2px 0 rgba(0,0,0,.18);
     }
-    .cd-dot{ flex:1; height:1px; background:linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent) }
-    .cd-done{ text-align:center; padding:12px; font-weight:700; }
-    /* 移除原本會把 5 欄改為 3/2 欄的 media query，確保不換行 */
+    .cd-dot{ flex:1; height:1px; background:linear-gradient(90deg, transparent, rgba(255,255,255,.55), transparent) }
+    .cd-done{ text-align:center; padding:12px; font-weight:700; color:#fff; }
 
   </style>
 </head>
@@ -121,7 +134,7 @@
         <h3>我們的婚禮倒數</h3>
         <div class="muted">期待與您共享喜悅</div>
 
-        <!-- 自家倒數（取代 TimeTaco） -->
+        <!-- 倒數（主色 #A98B73） -->
         <div id="countdown" class="countdown" role="group" aria-label="倒數計時">
           <div class="cd-title">
             <span>WEDDING&nbsp;INVITATION</span><span class="cd-dot" aria-hidden="true"></span>
