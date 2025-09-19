@@ -22,12 +22,11 @@
       --accent:#A98B73;
       --accent-ink:#fffaf5;
       --accent-soft:rgba(169,139,115,.12);
-      --safe-bottom: env(safe-area-inset-bottom, 0px);
     }
     *{box-sizing:border-box}
     html,body{height:100%;}
-    /* 最外層不要滾動（固定版面），改由 viewer 自己滾 */
-    html,body{overflow:hidden;}
+    /* 行動版預設：允許整頁滾動（修正手機不能滾動） */
+    html,body{overflow:auto;}
     body{
       margin:0; color:var(--ink); line-height:1.6;
       font-family: Inter, system-ui, -apple-system, "Noto Serif TC","PingFang TC","Microsoft JhengHei", Arial, sans-serif;
@@ -38,29 +37,42 @@
         linear-gradient(180deg, #fff 0%, var(--bg1) 100%);
     }
 
-    .wrap{ display:flex; flex-direction:column; max-width:1200px; margin:0 auto; gap:24px; padding:20px; height:100%; }
-    @media(min-width:900px){ .wrap{ display:grid; grid-template-columns: 1fr 1fr; gap:24px; align-items:stretch; } }
+    .wrap{ display:flex; flex-direction:column; max-width:1200px; margin:0 auto; gap:24px; padding:20px; }
+    @media(min-width:900px){
+      .wrap{ display:grid; grid-template-columns: 1fr 1fr; gap:24px; align-items:stretch; }
+    }
 
-    /* ✅ 手機可滾動：慣性滾動 + 觸控捲動提示 + 避免回彈 */
+    /* 主要修正：行動裝置 viewer 高度自動、可滾，並優化慣性滾動 */
     .viewer{
       overflow-y:auto;
+      -webkit-overflow-scrolling: touch;
       border-radius:26px;
       background:rgba(255,255,255,.55);
       border:1px solid rgba(255,255,255,.7);
       backdrop-filter:saturate(140%) blur(10px);
       box-shadow:0 20px 35px rgba(180,120,130,.16);
-      height:75vh;
-      -webkit-overflow-scrolling: touch; /* iOS 慣性滾動 */
-      touch-action: pan-y;               /* 允許縱向滑動 */
-      overscroll-behavior: contain;      /* 避免滾到頂/底時整頁拉動 */
+      /* 行動版用內容高度，避免圖片被擠壓到看不見 */
+      height:auto;
+      max-height:70vh; /* 仍給個上限，避免過長 */
     }
-    @media(min-width:900px){ .viewer{ height:var(--colH);} }
+    @media(min-width:900px){
+      /* 桌機：兩欄滿版視覺，且鎖住整頁滾動（僅桌機） */
+      html,body{overflow:hidden;}
+      .viewer{ height:var(--colH); max-height:none; }
+    }
 
-    .hero{ display:block; width:100%; height:auto; user-select:none; -webkit-user-drag:none; }
+    /* 圖片保險設定：確保一定看得到且等比縮放 */
+    .hero{
+      display:block;
+      width:100%;
+      max-width:100%;
+      height:auto;
+      user-select:none; -webkit-user-drag:none;
+    }
 
     .panel{ background:rgba(255,255,255,.7); border:1px solid rgba(255,255,255,.85); border-radius:22px; box-shadow:0 16px 28px rgba(130,120,180,.14); display:flex; flex-direction:column; }
     @media(min-width:900px){ .panel{ height:var(--colH);} }
-    .panel-inner{ padding:24px 18px; overflow:auto; }
+    .panel-inner{ padding:24px 18px; overflow:auto; -webkit-overflow-scrolling: touch; }
     .panel h3{ margin:0 0 10px; font-family:"Noto Serif TC", serif; font-weight:700; color:#734e57; letter-spacing:.06em; text-align:center; }
     .muted{opacity:.78; font-size:.95rem; text-align:center}
 
@@ -75,27 +87,23 @@
     .map{ border:0; border-radius:16px; width:100%; height:260px; box-shadow:0 6px 14px rgba(0,0,0,.12); }
 
     .nav-btns{ display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; }
-    .btn{ border:none; cursor:pointer; padding:10px 14px; border-radius:999px; background:linear-gradient(180deg, var(--glow), rgba(255,255,255,.4)); box-shadow:0 10px 18px rgba(0,0,0,.08), inset 0 0 0 1px rgba(255,255,255,.7); font-weight:600; color:#6a5360; backdrop-filter:saturate(140%) blur(6px); text-decoration:none; display:inline-block; }
-    .btn{ box-shadow:0 10px 18px rgba(169,139,115,.18), inset 0 0 0 1px rgba(255,255,255,.75); color:#6a4b3e; }
+    .btn{ border:none; cursor:pointer; padding:10px 14px; border-radius:999px; background:linear-gradient(180deg, var(--glow), rgba(255,255,255,.4)); box-shadow:0 10px 18px rgba(169,139,115,.18), inset 0 0 0 1px rgba(255,255,255,.75); font-weight:600; color:#6a4b3e; backdrop-filter:saturate(140%) blur(6px); text-decoration:none; display:inline-block; }
     .chip{font-size:.85rem; padding:8px 12px; background:rgba(255,255,255,.6); border-radius:999px; border:1px solid rgba(255,255,255,.8)}
     .copy{ font-size:.86rem; margin-left:6px; }
 
     footer{ text-align:center; font-size:.86rem; opacity:.7; padding:12px 0 24px; }
 
-    /* 浮動音樂按鈕：避開 iPhone 底部安全區 */
-    .music{
-      position:fixed; right:16px; bottom:calc(16px + var(--safe-bottom));
-      z-index:10; display:flex; gap:10px; align-items:center;
-    }
+    .music{ position:fixed; right:16px; bottom:16px; z-index:10; display:flex; gap:10px; align-items:center; }
     .hide{display:none}
 
-    /* ==== 倒數（主色 #A98B73） ==== */
+    /* ==== 倒數：以 #A98B73 為主色 ==== */
     .countdown{
       margin-top:10px; border-radius:20px;
       background:var(--accent); color:var(--accent-ink);
       box-shadow:0 16px 28px rgba(169,139,115,.35);
       padding:18px 14px;
-      background-image: radial-gradient(2px 2px at 10px 10px, rgba(255,255,255,.08) 1px, transparent 1px);
+      background-image:
+        radial-gradient(2px 2px at 10px 10px, rgba(255,255,255,.08) 1px, transparent 1px);
       background-size: 24px 24px;
       overflow-x:auto;
       border:1px solid rgba(255,255,255,.28);
@@ -148,7 +156,7 @@
         <h3>我們的婚禮倒數</h3>
         <div class="muted">期待與您共享喜悅</div>
 
-        <!-- 倒數 -->
+        <!-- 倒數（主色 #A98B73） -->
         <div id="countdown" class="countdown" role="group" aria-label="倒數計時">
           <div class="cd-title">
             <span>WEDDING&nbsp;INVITATION</span><span class="cd-dot" aria-hidden="true"></span>
@@ -224,7 +232,7 @@
     let maxScroll = 0;
 
     function recalc(){
-      const imgH = img.naturalHeight || img.scrollHeight;
+      const imgH = img.naturalHeight || img.scrollHeight || 0;
       maxScroll = Math.max(0, imgH - viewer.clientHeight);
     }
 
@@ -255,7 +263,6 @@
 
     window.addEventListener('resize', () => { recalc(); start = null; }, { passive: true });
 
-    /* 任何操作就停自動，保留手動滾動 */
     ['wheel','touchstart','pointerdown','keydown'].forEach(ev => {
       viewer.addEventListener(ev, stopAuto, { passive: true });
     });
