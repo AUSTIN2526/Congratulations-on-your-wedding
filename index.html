@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>我們的婚禮</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --ink:#5b4b4b; --glow:rgba(255,255,255,.65);
+      --bg1:#fff5f2; --bg2:#fde8ef; --bg3:#f7f2ff;
+      --colH:90vh;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; color:var(--ink); line-height:1.6;
+      font-family: Inter, system-ui, -apple-system, "Noto Serif TC","PingFang TC","Microsoft JhengHei", Arial, sans-serif;
+      background:
+        radial-gradient(1200px 600px at 10% 0%, var(--bg2), transparent 60%),
+        radial-gradient(900px 600px at 90% 10%, var(--bg3), transparent 60%),
+        radial-gradient(1200px 800px at 50% 120%, #ffe7d8, transparent 60%),
+        linear-gradient(180deg, #fff 0%, var(--bg1) 100%);
+    }
+
+    .wrap{
+      display:flex; flex-direction:column;
+      max-width:1200px; margin:0 auto; gap:24px; padding:20px;
+    }
+    @media(min-width:900px){
+      .wrap{
+        display:grid;
+        grid-template-columns: 1fr 1fr;
+        gap:24px;
+        align-items:stretch;
+      }
+    }
+
+    /* 左側：可自動+手動滾動 */
+    .viewer{
+      overflow-y:auto; /* 允許手動捲動 */
+      border-radius:26px;
+      background:rgba(255,255,255,.55);
+      border:1px solid rgba(255,255,255,.7);
+      backdrop-filter:saturate(140%) blur(10px);
+      box-shadow:0 20px 35px rgba(180,120,130,.16);
+      height:75vh;
+    }
+    @media(min-width:900px){
+      .viewer{ height:var(--colH);}
+    }
+    .hero{
+      display:block;
+      width:100%; height:auto;
+      user-select:none; -webkit-user-drag:none;
+    }
+
+    /* 右側 */
+    .panel{
+      background:rgba(255,255,255,.7);
+      border:1px solid rgba(255,255,255,.85);
+      border-radius:22px;
+      box-shadow:0 16px 28px rgba(130,120,180,.14);
+      display:flex; flex-direction:column;
+    }
+    @media(min-width:900px){
+      .panel{ height:var(--colH);}
+    }
+    .panel-inner{
+      padding:24px 18px;
+      overflow:auto;
+    }
+    .panel h3{
+      margin:0 0 10px; font-family:"Noto Serif TC", serif;
+      font-weight:700; color:#734e57; letter-spacing:.06em;
+      text-align:center;
+    }
+    .muted{opacity:.78; font-size:.95rem; text-align:center}
+    .timetaco-list{margin-top:14px}
+
+    .address{ margin-top:24px; }
+    .address h4{margin:0 0 6px; font-size:1.1rem; color:#6a4b57}
+    .address p{margin:0 0 10px; font-size:.95rem}
+    .map{
+      border:0; border-radius:16px;
+      width:100%; height:240px;
+      box-shadow:0 6px 14px rgba(0,0,0,.12);
+    }
+
+    footer{ text-align:center; font-size:.86rem; opacity:.7; padding:12px 0 24px; }
+
+    .music{
+      position:fixed; right:16px; bottom:16px; z-index:10; display:flex; gap:10px; align-items:center;
+    }
+    .btn{
+      border:none; cursor:pointer; padding:10px 14px; border-radius:999px;
+      background:linear-gradient(180deg, var(--glow), rgba(255,255,255,.4));
+      box-shadow:0 10px 18px rgba(0,0,0,.08), inset 0 0 0 1px rgba(255,255,255,.7);
+      font-weight:600; color:#6a5360; backdrop-filter:saturate(140%) blur(6px);
+    }
+    .chip{font-size:.85rem; padding:8px 12px; background:rgba(255,255,255,.6); border-radius:999px; border:1px solid rgba(255,255,255,.8)}
+    .hide{display:none}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <!-- 左：可自動+手動滾動 -->
+    <section class="viewer" id="viewer">
+      <img id="hero" class="hero" src="S__135061520.png" alt="Wedding Invitation">
+    </section>
+
+    <!-- 右：倒數與地點 -->
+    <section class="panel">
+      <div class="panel-inner">
+        <h3>我們的婚禮倒數</h3>
+        <div class="muted">期待與您共享喜悅</div>
+        <div class="timetaco-list" data-timetacoid="pkngab"></div>
+
+        <div class="address">
+          <h4>婚禮地點</h4>
+          <p>萊特薇庭 高雄館 Light Wedding Kaohsiung</p>
+          <iframe class="map"
+            src="https://www.google.com/maps?q=%E8%90%8A%E7%89%B9%E8%96%87%E5%BA%AD%20%E9%AB%98%E9%9B%84%E9%A4%A8%20Light%20Wedding%20Kaohsiung&output=embed"
+            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <p style="margin-top:10px">
+            <a href="https://www.google.com/maps?q=%E8%90%8A%E7%89%B9%E8%96%87%E5%BA%AD%20%E9%AB%98%E9%9B%84%E9%A4%A8%20Light%20Wedding%20Kaohsiung"
+               target="_blank" rel="noopener"
+               style="display:inline-block;padding:10px 14px;border-radius:999px;background:#f6d3da;color:#6a4b57;text-decoration:none;font-weight:600;">
+              打開 Google Maps
+            </a>
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>© Our Wedding</footer>
+
+  <!-- 背景音樂 -->
+  <audio id="bgm" src="music.mp3" preload="auto" loop></audio>
+  <div class="music">
+    <button id="toggle" class="btn">▶︎ 播放音樂</button>
+  </div>
+
+  <!-- TimeTaco -->
+  <script>
+    (function(d,s,id){
+      var js,ref=d.getElementsByTagName(s)[0];
+      if(d.getElementById(id))return;
+      js=d.createElement(s); js.id=id; js.src='https://www.timetaco.com/static/js/embed.js';
+      ref.parentNode.insertBefore(js,ref);
+    }(document,'script','timetaco-jssdk'));
+  </script>
+
+  <!-- 自動捲動 viewer（可手動干預） -->
+  <script>
+    (function(){
+      const viewer=document.getElementById('viewer');
+      const img=document.getElementById('hero');
+      let cycles=0, speed=20, rafId, last=0, auto=true;
+
+      function step(ts){
+        if(!last) last=ts;
+        const dt=(ts-last)/1000; last=ts;
+        viewer.scrollTop+=speed*dt;
+        if(viewer.scrollTop >= img.scrollHeight - viewer.clientHeight){
+          cycles++;
+          if(cycles>=2){ cancelAnimationFrame(rafId); auto=false; return; }
+          viewer.scrollTop=0;
+          setTimeout(()=>{ last=0; rafId=requestAnimationFrame(step); },500);
+          return;
+        }
+        if(auto) rafId=requestAnimationFrame(step);
+      }
+
+      img.addEventListener('load',()=>{ rafId=requestAnimationFrame(step); });
+      if(img.complete) img.dispatchEvent(new Event('load'));
+      // 使用者滾動時就暫停自動
+      viewer.addEventListener('wheel',()=>{ auto=false; cancelAnimationFrame(rafId); });
+      viewer.addEventListener('touchmove',()=>{ auto=false; cancelAnimationFrame(rafId); });
+    })();
+  </script>
+
+  <!-- 音樂控制 -->
+  <script>
+    const audio=document.getElementById('bgm'), btn=document.getElementById('toggle'), hint=document.getElementById('hint');
+    async function setPlaying(playing){
+      try{ if(playing){await audio.play(); btn.textContent='⏸︎ 暫停音樂'; hint.classList.add('hide');}
+        else{audio.pause(); btn.textContent='▶︎ 播放音樂';}}
+      catch(e){ hint.classList.remove('hide');}
+    }
+    document.addEventListener('DOMContentLoaded',()=>setPlaying(true));
+    window.addEventListener('click',()=>audio.paused&&setPlaying(true));
+    window.addEventListener('touchstart',()=>audio.paused&&setPlaying(true));
+    btn.addEventListener('click',()=>audio.paused?setPlaying(true):setPlaying(false));
+  </script>
+</body>
+</html>
