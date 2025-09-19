@@ -22,6 +22,8 @@
       --accent:#A98B73;
       --accent-ink:#fffaf5;
       --accent-soft:rgba(169,139,115,.12);
+      --shadow:0 20px 35px rgba(180,120,130,.16);
+      --ease: cubic-bezier(.2,.7,.2,1);
     }
     *{box-sizing:border-box}
     html,body{height:100%;}
@@ -42,23 +44,46 @@
       .wrap{ display:grid; grid-template-columns: 1fr 1fr; gap:24px; align-items:stretch; }
     }
 
-    /* 主要修正：行動裝置 viewer 高度自動、可滾，並優化慣性滾動 */
+    /* ====== 行動版：切換式兩畫面（左/右卡片） ====== */
+    @media(max-width:899px){
+      .wrap{ position:relative; height:100svh; padding:0; max-width:none; }
+      /* 疊放兩卡片，使用 transform 切換 */
+      .viewer, .panel{ position:absolute; inset:0; height:100vh; height:100svh; margin:0; border-radius:0; }
+      .viewer{ transform:translateX(0%); transition: transform .55s var(--ease); overflow-y:auto; -webkit-overflow-scrolling: touch; }
+      .panel{ transform:translateX(100%); transition: transform .55s var(--ease); }
+      body.mode-panel .viewer{ transform:translateX(-100%); }
+      body.mode-panel .panel{ transform:translateX(0%); }
+    }
+
+    /* 共用 viewer 樣式（避免覆蓋高度設定）*/
     .viewer{
       overflow-y:auto;
       -webkit-overflow-scrolling: touch;
-      border-radius:26px;
       background:rgba(255,255,255,.55);
       border:1px solid rgba(255,255,255,.7);
       backdrop-filter:saturate(140%) blur(10px);
-      box-shadow:0 20px 35px rgba(180,120,130,.16);
-      /* 行動版用內容高度，避免圖片被擠壓到看不見 */
-      height:auto;
-      max-height:70vh; /* 仍給個上限，避免過長 */
+      box-shadow:var(--shadow);
+      border-radius:26px;
     }
+    /* 當圖片高度不足以填滿視窗時，改以 cover 方式鋪滿，避免底部留白 */
+    .viewer.cover{ overflow:hidden; }
+    .viewer.cover .hero{ width:100%; height:100%; object-fit:cover; }
+
+    /* 桌機：兩欄滿版視覺，且鎖住整頁滾動（僅桌機） */
     @media(min-width:900px){
-      /* 桌機：兩欄滿版視覺，且鎖住整頁滾動（僅桌機） */
       html,body{overflow:hidden;}
       .viewer{ height:var(--colH); max-height:none; }
+      .panel{ height:var(--colH);}    
+
+      /* 💻 電腦版只隱藏左側 viewer 的滾輪（仍可滾動） */
+      .viewer{
+        scrollbar-width: none;        /* Firefox */
+        -ms-overflow-style: none;     /* IE/舊 Edge */
+      }
+      .viewer::-webkit-scrollbar{
+        display: none;                /* Chrome/Safari/Edge(Chromium) */
+      }
+      /* 右側 .panel-inner 不做處理：保留可視滾輪 */
     }
 
     /* 圖片保險設定：確保一定看得到且等比縮放 */
@@ -72,7 +97,7 @@
 
     .panel{ background:rgba(255,255,255,.7); border:1px solid rgba(255,255,255,.85); border-radius:22px; box-shadow:0 16px 28px rgba(130,120,180,.14); display:flex; flex-direction:column; }
     @media(min-width:900px){ .panel{ height:var(--colH);} }
-    .panel-inner{ padding:24px 18px; overflow:auto; -webkit-overflow-scrolling: touch; }
+    .panel-inner{ padding:24px 18px; overflow:auto; -webkit-overflow-scrolling: touch; height:100%; }
     .panel h3{ margin:0 0 10px; font-family:"Noto Serif TC", serif; font-weight:700; color:#734e57; letter-spacing:.06em; text-align:center; }
     .muted{opacity:.78; font-size:.95rem; text-align:center}
 
@@ -93,7 +118,14 @@
 
     footer{ text-align:center; font-size:.86rem; opacity:.7; padding:12px 0 24px; }
 
-    .music{ position:fixed; right:16px; bottom:16px; z-index:10; display:flex; gap:10px; align-items:center; }
+    /* ==== 播放音樂：右上角，避開安全區，層級提高 ==== */
+    .music{
+      position: fixed;
+      right: max(16px, env(safe-area-inset-right));
+      top:  max(16px, env(safe-area-inset-top));
+      z-index: 50;
+      display:flex; gap:10px; align-items:center;
+    }
     .hide{display:none}
 
     /* ==== 倒數：以 #A98B73 為主色 ==== */
@@ -141,18 +173,50 @@
     }
     .cd-dot{ flex:1; height:1px; background:linear-gradient(90deg, transparent, rgba(255,255,255,.55), transparent) }
     .cd-done{ text-align:center; padding:12px; font-weight:700; color:#fff; }
+
+    /* === 浮動切換按鈕（僅手機顯示） === */
+    .fab{
+      position:fixed; right:16px; bottom:16px; z-index:40;
+      border:none; border-radius:999px; padding:14px 18px; font-weight:800; letter-spacing:.08em;
+      background:linear-gradient(180deg, var(--glow), rgba(255,255,255,.6));
+      box-shadow:0 16px 28px rgba(0,0,0,.16), inset 0 0 0 1px rgba(255,255,255,.75);
+      color:#6a4b3e; backdrop-filter:saturate(140%) blur(6px);
+      display:flex; align-items:center; gap:10px;
+      transition: transform .4s var(--ease), box-shadow .3s var(--ease);
+    }
+    .fab .dot{ width:8px; height:8px; border-radius:50%; background:#6a4b3e; opacity:.6; }
+    .fab .icon{ display:inline-block; transform:rotate(0deg); transition: transform .4s var(--ease); font-size:18px; }
+    body.mode-panel .fab .icon{ transform:rotate(180deg); }
+    .fab:active{ transform: translateY(1px) scale(.98); }
+    @media(min-width:900px){ .fab{ display:none; } }
+
+    /* 面板頂部返回列（手機） */
+    .topbar{ display:none; }
+    @media(max-width:899px){
+      .topbar{ position:sticky; top:0; z-index:5; display:flex; align-items:center; gap:8px; padding:10px 8px; background:rgba(255,255,255,.85); backdrop-filter: blur(8px); border-bottom:1px solid rgba(0,0,0,.06); }
+      .back-btn{ border:none; background:rgba(0,0,0,.04); border:1px solid rgba(0,0,0,.06); padding:8px 12px; border-radius:12px; font-weight:700; }
+    }
+
+    /* 動畫偏好：減少動作 */
+    @media (prefers-reduced-motion: reduce){
+      .viewer,.panel,.fab{ transition:none !important; }
+    }
   </style>
 </head>
-<body>
+<body class="mode-viewer">
   <main class="wrap">
-    <!-- 左：可自動+手動滾動 -->
+    <!-- 左：可自動+手動滾動（主要畫面） -->
     <section class="viewer" id="viewer" aria-label="婚禮邀請視覺">
       <img id="hero" class="hero" src="S__135061520.png" alt="Wedding Invitation 主視覺">
     </section>
 
-    <!-- 右：倒數與地點 -->
-    <section class="panel" aria-label="資訊與地圖">
-      <div class="panel-inner">
+    <!-- 右：倒數與地點（資訊面板） -->
+    <section class="panel" id="infoPanel" aria-label="資訊與地圖">
+      <div class="topbar">
+        <button id="backBtn" class="back-btn" aria-label="回到邀請視覺">← 返回</button>
+        <strong>婚禮資訊</strong>
+      </div>
+      <div class="panel-inner" tabindex="-1">
         <h3>我們的婚禮倒數</h3>
         <div class="muted">期待與您共享喜悅</div>
 
@@ -219,6 +283,13 @@
     <span id="hint" class="chip hide">若未自動播放，請點一下畫面</span>
   </div>
 
+  <!-- 浮動切換鍵（手機） -->
+  <button id="fab" class="fab" aria-controls="infoPanel" aria-expanded="false">
+    <span class="icon">⇄</span>
+    <span class="label">查看資訊</span>
+    <span class="dot" aria-hidden="true"></span>
+  </button>
+
   <!-- 自動捲動 viewer（連續位移） -->
   <script>
   (() => {
@@ -234,6 +305,13 @@
     function recalc(){
       const imgH = img.naturalHeight || img.scrollHeight || 0;
       maxScroll = Math.max(0, imgH - viewer.clientHeight);
+      // 若圖片高度不足以捲動，切換為鋪滿模式並停用自動捲動
+      if (viewer.clientHeight >= imgH - 1){
+        viewer.classList.add('cover');
+        if(window.ViewerAuto) window.ViewerAuto.stop();
+      } else {
+        viewer.classList.remove('cover');
+      }
     }
 
     function loop(ts){
@@ -270,10 +348,13 @@
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       stopAuto();
     }
+
+    // 將控制權提供給外部（切換到資訊面板時可暫停）
+    window.ViewerAuto = { start: startAuto, stop: stopAuto };
   })();
   </script>
 
-  <!-- 音樂控制 + 複製地址 -->
+  <!-- 音樂控制 + 複製地址 + 行動版畫面切換 -->
   <script>
     const audio = document.getElementById('bgm');
     const playBtn = document.getElementById('toggle');
@@ -308,6 +389,41 @@
         self.textContent = '已複製 ✓';
         setTimeout(()=> self.textContent = old, 1200);
       }catch(err){}
+    });
+
+    // ====== 行動版：主視覺 <-> 資訊 面板切換 ======
+    const fab = document.getElementById('fab');
+    const backBtn = document.getElementById('backBtn');
+    const panel = document.getElementById('infoPanel');
+
+    function toPanel(){
+      document.body.classList.add('mode-panel');
+      fab.setAttribute('aria-expanded','true');
+      // 可及性：聚焦到資訊面板內容
+      const inner = panel.querySelector('.panel-inner');
+      setTimeout(()=> inner && inner.focus(), 300);
+      // 停止主視覺自動捲動
+      if(window.ViewerAuto) window.ViewerAuto.stop();
+      // 更新 FAB 文案
+      fab.querySelector('.label').textContent = '回到主視覺';
+    }
+    function toViewer(){
+      document.body.classList.remove('mode-panel');
+      fab.setAttribute('aria-expanded','false');
+      // 回到主視覺後重啟自動捲動
+      if(window.ViewerAuto) window.ViewerAuto.start();
+      fab.querySelector('.label').textContent = '查看資訊';
+    }
+
+    fab.addEventListener('click', () => {
+      const expanded = fab.getAttribute('aria-expanded') === 'true';
+      if(expanded) { toViewer(); } else { toPanel(); }
+    });
+    backBtn.addEventListener('click', toViewer);
+
+    // 鍵盤快速鍵：Esc 回到主視覺
+    window.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape') toViewer();
     });
   </script>
 
