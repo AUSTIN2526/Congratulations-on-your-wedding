@@ -271,6 +271,53 @@ body.opened .hero-bg img{ transform:scale(1); }
 
 /* 邀請詞 */
 .verse{ display:grid; gap:clamp(24px,5vw,40px); }
+.verse-text{ display:grid; gap:clamp(24px,5vw,40px); }
+
+/* Q版插畫：尤先生・尤太太 */
+.chibi{
+  position:relative; justify-self:center;
+  width:min(76vw,340px);
+  padding:clamp(14px,3vw,22px) 0 0;
+}
+/* 背後一圈金色細線，像一枚淡淡的印框 */
+.chibi::before{
+  content:""; position:absolute; z-index:0;
+  left:50%; top:52%; width:92%; aspect-ratio:1; transform:translate(-50%,-50%);
+  border-radius:50%;
+  border:1px solid rgba(150,112,42,.35);
+  box-shadow:0 0 0 9px rgba(246,238,224,.9), 0 0 0 10px rgba(150,112,42,.18);
+}
+.chibi img{
+  position:relative; z-index:1; width:100%; height:auto;
+  -webkit-mask-image:linear-gradient(180deg,#000 86%,transparent 100%);
+          mask-image:linear-gradient(180deg,#000 86%,transparent 100%);
+  animation:float 6s ease-in-out infinite;
+  transform-origin:50% 100%;
+}
+@keyframes float{
+  0%,100%{ transform:translateY(0) rotate(0deg); }
+  50%    { transform:translateY(-8px) rotate(-.6deg); }
+}
+.chibi-seal{
+  position:absolute; z-index:2; right:2%; bottom:18%;
+  width:clamp(42px,11vw,52px); aspect-ratio:1; display:grid; place-content:center;
+  background:var(--vermilion); color:var(--gold-lit);
+  font-weight:900; font-size:clamp(22px,6vw,27px); line-height:1;
+  border-radius:6px; transform:rotate(-8deg);
+  box-shadow:inset 0 0 0 2px rgba(240,220,168,.55), 0 6px 14px rgba(78,13,24,.25);
+}
+.chibi figcaption{
+  position:relative; z-index:2; text-align:center; margin-top:6px;
+  display:grid; gap:2px;
+}
+.chibi figcaption b{
+  font-size:clamp(15px,3.8vw,17px); font-weight:900; letter-spacing:.3em; text-indent:.3em;
+  color:#8C1520;
+}
+.chibi figcaption span{
+  font-family:"Bodoni Moda",serif; font-style:italic; font-size:.8rem;
+  letter-spacing:.14em; color:#96702A;
+}
 .verse p{
   margin:0; font-size:clamp(16px,4vw,20px); letter-spacing:.12em; line-height:2.4;
   max-width:30ch;
@@ -280,7 +327,8 @@ body.opened .hero-bg img{ transform:scale(1); }
   max-width:none;
 }
 @media(min-width:860px){
-  .verse{ grid-template-columns:1fr 1fr; align-items:end; }
+  .verse{ grid-template-columns:5fr 6fr; align-items:center; gap:clamp(40px,6vw,88px); }
+  .chibi{ width:min(100%,400px); }
 }
 
 /* 倒數 */
@@ -430,7 +478,7 @@ body.opened .music{ opacity:1; transform:none; pointer-events:auto; }
   html{ scroll-behavior:auto; }
   *,*::before,*::after{ animation:none !important; transition-duration:.01ms !important; }
   .rise{ opacity:1; transform:none; }
-  .hero-bg img,.frame img{ transform:none; }
+  .hero-bg img,.frame img,.chibi img{ transform:none; }
 }
 </style>
 
@@ -485,11 +533,20 @@ body.opened .music{ opacity:1; transform:none; pointer-events:auto; }
   <!-- ═══════════ 邀請詞 ═══════════ -->
   <section class="band band-rice" id="verse">
     <div class="shell verse">
-      <div class="rise">
-        <p class="eyebrow" style="margin-bottom:18px">Our Invitation</p>
-        <p>謹訂於二〇二六年十一月七日，<br>在高雄的「頂鮮台南擔仔麵高雄自強店」，<br>設宴款待最重要的您。</p>
+      <!-- Q版插畫 -->
+      <figure class="chibi rise">
+        <img src="chibi.png" alt="尤先生與尤太太的Q版插畫" width="900" height="1153" loading="lazy" decoding="async">
+        <span class="chibi-seal" aria-hidden="true">囍</span>
+        <figcaption><b>尤先生・尤太太</b><span>Mr. &amp; Mrs. Yu</span></figcaption>
+      </figure>
+
+      <div class="verse-text">
+        <div class="rise">
+          <p class="eyebrow" style="margin-bottom:18px">Our Invitation</p>
+          <p>謹訂於二〇二六年十一月七日，<br>在高雄的「頂鮮台南擔仔麵高雄自強店」，<br>設宴款待最重要的您。</p>
+        </div>
+        <p class="sig rise">您的出席，是這一天最好的一份禮物。<br>期待與您舉杯。</p>
       </div>
-      <p class="sig rise">您的出席，是這一天最好的一份禮物。<br>期待與您舉杯。</p>
     </div>
   </section>
 
